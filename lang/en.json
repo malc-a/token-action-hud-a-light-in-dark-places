@@ -1,0 +1,13 @@
+{
+  "tokenActionHud": {
+    "those-who-wander": {
+      "resistances": "Resistances",
+      "skills": "Skills",
+      "schools": "Schools of Magic",
+      "spells": "Spells",
+      "talents": "Talents",
+      "weapons": "Weapons",
+      "gear": "Gear"
+    }
+  }
+}

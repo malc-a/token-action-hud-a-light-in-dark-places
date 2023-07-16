@@ -1,0 +1,65 @@
+{
+  "id": "token-action-hud-those-who-wander",
+  "title": "Token Action HUD for Those Who Wander",
+  "description": "Provide support for the Those Who Wander system with Token Action HUD Core",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.305",
+    "maximum": ""
+  },
+  "authors": [
+    {
+      "name": "Malc Arnold",
+      "url": "https://github.com/malc-a",
+      "discord": "malc#0040",
+      "flags": {}
+
+    }
+  ],
+  "bugs": "https://github.com/malc-a/token-action-hud-those-who-wander/issues",
+
+  "esmodules": [
+    "scripts/init.js"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "thosewhowander",
+        "type": "system",
+        "compatibility": [
+          {
+            "minimum": "0.4.0",
+            "maximum": "0.4",
+            "verified": "0.4"
+          }
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          {
+            "minimum": "1.4.7",
+            "maximum": "1.4",
+            "verified": "1.4.7"
+          }
+        ]
+      }
+    ]
+  },
+  "url": "https://github.com/malc-a/token-action-hud-those-who-wander",
+  "readme": "https://github.com/malc-a/token-action-hud-those-who-wander/blob/main/README.md",
+  "license": "LICENSE.txt",
+  "changelog": "https://github.com/malc-a/token-action-hud-those-who-wander/RELEASES",
+  "manifest": "https://raw.githubusercontent.com/malc-a/token-action-hud-those-who-wander/main/system.json"
+}
