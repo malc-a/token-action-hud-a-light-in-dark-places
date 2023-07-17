@@ -2,6 +2,7 @@
   "tokenActionHud": {
     "those-who-wander": {
       "resistances": "Resistances",
+      "minion": "Minion",
       "skills": "Skills",
       "schools": "Schools of Magic",
       "spells": "Spells",

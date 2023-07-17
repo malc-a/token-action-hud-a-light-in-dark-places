@@ -27,6 +27,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'skills',
                 name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.skills'),
                 groups: [
+                    { ...groups.minion, nestId: 'skills_minion' },
                     { ...groups.skills, nestId: 'skills_skills' }
 		]
 	    },

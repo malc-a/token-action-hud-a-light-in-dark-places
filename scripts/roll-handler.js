@@ -66,6 +66,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 	    case 'wealth':
                 this.#handleWealthAction(event, actor, actionId)
 		break;
+	    case 'minion':
+                this.#handleMinionDiceAction(event, actor, actionId)
+		break;
 	    case 'refresh':
 		this.#handleRefreshAction(event, actor, actionId)
 		break;
@@ -107,6 +110,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
          #handleWealthAction (event, actor, actionId) {
 	     actor.rollWealth(event)
+        }
+
+        /**
+         * Handle minion dice action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+         #handleMinionDiceAction (event, actor, actionId) {
+	     actor.rollMinionDice(event)
         }
 
         /**

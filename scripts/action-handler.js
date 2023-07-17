@@ -46,6 +46,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 	    this.#buildTalents()
             this.#buildGear()
             this.#buildWealth()
+	    this.#buildMinionDice()
 	    this.#buildRefresh()
         }
 
@@ -315,6 +316,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
                     listName: listName,
                     encodedValue: ['wealth', 'wealth'].join(this.delimiter),
+                }], groupData)
+            }
+        }
+
+        /**
+         * Build minion dice rolls
+         * @private
+         */
+        async #buildMinionDice () {
+            const groupData = { id: 'minion', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Check if the character is a minion before allowing the roll
+            if (this.actor.type === 'minion' && (this.actor.system.dice ?? 0)) {
+                // Add minion attacks as an action
+                this.addActions([{
+                    id: "minion",
+                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
+                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
+                    listName: listName,
+                    encodedValue: ['minion', 'minion'].join(this.delimiter),
                 }], groupData)
             }
         }

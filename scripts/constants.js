@@ -32,6 +32,7 @@ export const GROUP = {
     resistances: { id: 'resistances', name: 'tokenActionHud.those-who-wander.resistances',
 		   type: 'system' },
     skills: { id: 'skills', name: 'tokenActionHud.those-who-wander.skills', type: 'system' },
+    minion: { id: 'minion', name: 'tokenActionHud.those-who-wander.minion', type: 'system' },
     schools: { id: 'schools', name: 'tokenActionHud.those-who-wander.schools', type: 'system' },
     spells: { id: 'spells', name: 'tokenActionHud.those-who-wander.spells', type: 'system' },
     talents: { id: 'talents', name: 'tokenActionHud.those-who-wander.talents', type: 'system' },
