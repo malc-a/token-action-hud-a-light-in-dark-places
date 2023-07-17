@@ -35,6 +35,8 @@ export const GROUP = {
     schools: { id: 'schools', name: 'tokenActionHud.those-who-wander.schools', type: 'system' },
     spells: { id: 'spells', name: 'tokenActionHud.those-who-wander.spells', type: 'system' },
     talents: { id: 'talents', name: 'tokenActionHud.those-who-wander.talents', type: 'system' },
+    attacks: { id: 'attacks', name: 'tokenActionHud.those-who-wander.attacks', type: 'system' },
+    features: { id: 'features', name: 'tokenActionHud.those-who-wander.features', type: 'system' },
     weapons: { id: 'weapons', name: 'tokenActionHud.those-who-wander.weapons', type: 'system' },
     gear: { id: 'gear', name: 'tokenActionHud.those-who-wander.gear', type: 'system' },
     wealth: { id: 'wealth', name: 'tokenActionHud.those-who-wander.wealth', type: 'system' },
@@ -44,9 +46,18 @@ export const GROUP = {
 }
 
 /**
+ * Talent/feature types
+ */
+export const TALENT_TYPE = {
+    talent: { groupId: 'talents' },
+    attack: { groupId: 'attacks' },
+    feature: { groupId: 'features' }
+}
+
+/**
  * Item types
  */
-export const ITEM_TYPE = {
+export const GEAR_TYPE = {
     weapon: { groupId: 'weapons' },
     gear: { groupId: 'gear' }
 }

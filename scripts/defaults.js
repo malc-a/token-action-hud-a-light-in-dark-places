@@ -44,7 +44,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'talents',
                 name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.talents'),
                 groups: [
-                    { ...groups.talents, nestId: 'talents_talents' }
+                    { ...groups.talents, nestId: 'talents_talents' },
+                    { ...groups.attacks, nestId: 'talents_attacks' },
+                    { ...groups.features, nestId: 'talents_features' }
 		]
 	    },
             {
@@ -64,7 +66,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.wealth, nestId: 'utility_wealth' },
                     { ...groups.combat, nestId: 'utility_combat' },
                     { ...groups.token, nestId: 'utility_token' },
-                    { ...groups.rests, nestId: 'utility_rests' },
                     { ...groups.utility, nestId: 'utility_utility' }
                 ]
             }

@@ -66,6 +66,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 	    case 'wealth':
                 this.#handleWealthAction(event, actor, actionId)
 		break;
+	    case 'refresh':
+		this.#handleRefreshAction(event, actor, actionId)
+		break;
             case 'utility':
                 this.#handleUtilityAction(token, actionId)
                 break
@@ -104,6 +107,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
          #handleWealthAction (event, actor, actionId) {
 	     actor.rollWealth(event)
+        }
+
+        /**
+         * Handle refresh action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+         #handleRefreshAction (event, actor, actionId) {
+	     actor.refreshPools()
         }
 
         /**

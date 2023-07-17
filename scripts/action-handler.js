@@ -1,5 +1,5 @@
 // System Module Imports
-import { ACTION_TYPE, ITEM_TYPE } from './constants.js'
+import { ACTION_TYPE, TALENT_TYPE, GEAR_TYPE } from './constants.js'
 import { Utils } from './utils.js'
 
 export let ActionHandler = null
@@ -27,9 +27,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 this.items = items
             }
 
-            if (this.actorType === 'character') {
+            if (this.actor) {
                 this.#buildCharacterActions()
-            } else if (!this.actor) {
+            } else {
                 this.#buildMultipleTokenActions()
             }
         }
@@ -46,6 +46,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 	    this.#buildTalents()
             this.#buildGear()
             this.#buildWealth()
+	    this.#buildRefresh()
         }
 
         /**
@@ -215,7 +216,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 		const bonus = itemData.system.bonus ?? ""
 
 		// Add any rollable talents to the map
-		if (type === 'talent' && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
+		if (['talent','feature','attack'].includes(type)
+		    && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
                     const typeMap = talentMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     talentMap.set(type, typeMap)
@@ -223,7 +225,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
 
             for (const [type, typeMap] of talentMap) {
-                const groupData = { id: 'talents', type: 'system' }
+                const groupId = TALENT_TYPE[type]?.groupId
+                if (!groupId) continue
+                const groupData = { id: groupId, type: 'system' }
 
                 // Get actions
                 const actions = [...typeMap].map(([itemId, itemData]) => {
@@ -268,9 +272,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
 
             for (const [type, typeMap] of gearMap) {
-                const groupId = ITEM_TYPE[type]?.groupId
+                const groupId = GEAR_TYPE[type]?.groupId
                 if (!groupId) continue
-
                 const groupData = { id: groupId, type: 'system' }
 
                 // Get actions
@@ -312,6 +315,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
                     listName: listName,
                     encodedValue: ['wealth', 'wealth'].join(this.delimiter),
+                }], groupData)
+            }
+        }
+
+        /**
+         * Build refreshes
+         * @private
+         */
+        async #buildRefresh () {
+            const groupData = { id: 'utility', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Minions don't have pools to refresh
+            if (this.actor.type !== 'minion') {
+                // Add refresh pools
+                this.addActions([{
+                    id: "refresh",
+                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh`),
+                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh`),
+                    listName: listName,
+                    encodedValue: ['refresh', 'refresh'].join(this.delimiter),
                 }], groupData)
             }
         }
