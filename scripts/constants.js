@@ -37,6 +37,7 @@ export const GROUP = {
     talents: { id: 'talents', name: 'tokenActionHud.those-who-wander.talents', type: 'system' },
     weapons: { id: 'weapons', name: 'tokenActionHud.those-who-wander.weapons', type: 'system' },
     gear: { id: 'gear', name: 'tokenActionHud.those-who-wander.gear', type: 'system' },
+    wealth: { id: 'wealth', name: 'tokenActionHud.those-who-wander.wealth', type: 'system' },
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
     token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
     utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' }

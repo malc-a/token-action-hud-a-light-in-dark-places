@@ -2,7 +2,7 @@
   "id": "token-action-hud-those-who-wander",
   "title": "Token Action HUD for Those Who Wander",
   "description": "Provide support for the Those Who Wander system with Token Action HUD Core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
     "minimum": "11",
     "verified": "11.305",
@@ -36,7 +36,7 @@
         "type": "system",
         "compatibility": [
           {
-            "minimum": "0.4.0",
+            "minimum": "0.4.1",
             "maximum": "0.4",
             "verified": "0.4"
           }

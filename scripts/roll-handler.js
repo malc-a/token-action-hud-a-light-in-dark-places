@@ -63,6 +63,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             case 'item':
                 this.#handleItemAction(event, actor, actionId)
                 break
+	    case 'wealth':
+                this.#handleWealthAction(event, actor, actionId)
+		break;
             case 'utility':
                 this.#handleUtilityAction(token, actionId)
                 break
@@ -90,6 +93,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         #handleItemAction (event, actor, actionId) {
             const item = actor.items.get(actionId)
 	    item.roll(event)
+        }
+
+        /**
+         * Handle wealth action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+         #handleWealthAction (event, actor, actionId) {
+	     actor.rollWealth(event)
         }
 
         /**

@@ -45,6 +45,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 	    this.#buildSpells()
 	    this.#buildTalents()
             this.#buildGear()
+            this.#buildWealth()
         }
 
         /**
@@ -290,6 +291,28 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
                 // TAH Core method to add actions to the action list
                 this.addActions(actions, groupData)
+            }
+        }
+
+        /**
+         * Build wealth
+         * @private
+         */
+        async #buildWealth () {
+            const groupData = { id: 'wealth', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Check if the character has wealth before allowing the roll
+            if ((this.actor.system.wealth ?? 0) > 0) {
+                // Add wealth as an action
+                this.addActions([{
+                    id: "wealth",
+                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
+                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
+                    listName: listName,
+                    encodedValue: ['wealth', 'wealth'].join(this.delimiter),
+                }], groupData)
             }
         }
     }
