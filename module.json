@@ -2,7 +2,7 @@
   "id": "token-action-hud-those-who-wander",
   "title": "Token Action HUD for Those Who Wander",
   "description": "Provide support for the Those Who Wander system with Token Action HUD Core",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "compatibility": {
     "minimum": "11",
     "verified": "11.305",
@@ -17,8 +17,6 @@
 
     }
   ],
-  "bugs": "https://github.com/malc-a/token-action-hud-those-who-wander/issues",
-
   "esmodules": [
     "scripts/init.js"
   ],
@@ -36,7 +34,7 @@
         "type": "system",
         "compatibility": [
           {
-            "minimum": "0.5.0",
+            "minimum": "0.5.1",
             "verified": "0.5"
           }
         ]
@@ -59,6 +57,7 @@
   "url": "https://github.com/malc-a/token-action-hud-those-who-wander",
   "readme": "https://github.com/malc-a/token-action-hud-those-who-wander/blob/main/README.md",
   "license": "LICENSE.txt",
+  "bugs": "https://github.com/malc-a/token-action-hud-those-who-wander/issues",
   "changelog": "https://github.com/malc-a/token-action-hud-those-who-wander/RELEASES",
   "manifest": "https://github.com/malc-a/token-action-hud-those-who-wander/releases/latest/download/module.json",
   "download": "https://github.com/malc-a/token-action-hud-those-who-wander/releases/latest/download/token-action-hud-those-who-wander.zip"

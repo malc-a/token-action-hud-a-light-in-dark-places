@@ -356,8 +356,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 // Add refresh pools
                 this.addActions([{
                     id: "refresh",
-                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh`),
-                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh`),
+                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
+                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
                     listName: listName,
                     encodedValue: ['refresh', 'refresh'].join(this.delimiter),
                 }], groupData)
