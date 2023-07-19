@@ -39,15 +39,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildCharacterActions () {
-	    this.#buildResistances()
-	    this.#buildSkills()
-	    this.#buildSchools()
-	    this.#buildSpells()
-	    this.#buildTalents()
+            this.#buildResistances()
+            this.#buildSkills()
+            this.#buildSchools()
+            this.#buildSpells()
+            this.#buildTalents()
             this.#buildGear()
             this.#buildWealth()
-	    this.#buildMinionDice()
-	    this.#buildRefresh()
+            this.#buildMinionDice()
+            this.#buildRefresh()
         }
 
         /**
@@ -67,13 +67,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-	    // Add each resistance as an action
+            // Add each resistance as an action
             Object.keys(this.actor.system.resistances).forEach( r => {
                 this.addActions([{
                     id: r,
                     name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.resistance.${r}`),
                     description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.resistance.${r}`),
-		    listName: listName,
+                    listName: listName,
                     encodedValue: ['resistance', r].join(this.delimiter),
                 }], groupData)
             })
@@ -91,12 +91,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
 
-		// Add all skills to the map
-		if (type === 'skill') {
+                // Add all skills to the map
+                if (type === 'skill') {
                     const typeMap = skillMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     skillMap.set(type, typeMap)
-		}
+                }
             }
 
             for (const [type, typeMap] of skillMap) {
@@ -135,12 +135,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
 
-		// Add all schools to the map
-		if (type === 'school') {
+                // Add all schools to the map
+                if (type === 'school') {
                     const typeMap = schoolMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     schoolMap.set(type, typeMap)
-		}
+                }
             }
 
             for (const [type, typeMap] of schoolMap) {
@@ -175,12 +175,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
 
-		// Add all spell to the map
-		if (type === 'spell') {
+                // Add all spell to the map
+                if (type === 'spell') {
                     const typeMap = spellMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     spellMap.set(type, typeMap)
-		}
+                }
             }
 
             for (const [type, typeMap] of spellMap) {
@@ -214,15 +214,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
-		const bonus = itemData.system.bonus ?? ""
+                const bonus = itemData.system.bonus ?? ""
 
-		// Add any rollable talents to the map
-		if (['talent','feature','attack'].includes(type)
-		    && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
+                // Add any rollable talents to the map
+                if (['talent','feature','attack'].includes(type)
+                    && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
                     const typeMap = talentMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     talentMap.set(type, typeMap)
-		}
+                }
             }
 
             for (const [type, typeMap] of talentMap) {
@@ -261,15 +261,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
-		const bonus = itemData.system.bonus ?? ""
+                const bonus = itemData.system.bonus ?? ""
 
-		// Add any gear or weapon with a bonus to the map
-		if (['weapon','gear'].includes(type)
-		    && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
+                // Add any gear or weapon with a bonus to the map
+                if (['weapon','gear'].includes(type)
+                    && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
                     const typeMap = gearMap.get(type) ?? new Map()
                     typeMap.set(itemId, itemData)
                     gearMap.set(type, typeMap)
-		}
+                }
             }
 
             for (const [type, typeMap] of gearMap) {

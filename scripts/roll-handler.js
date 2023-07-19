@@ -37,7 +37,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
 
             const controlledTokens = canvas.tokens.controlled
-                .filter((token) => knownCharacters.includes(token.actor?.type))
+                  .filter((token) => knownCharacters.includes(token.actor?.type))
 
             // If multiple actors are selected
             for (const token of controlledTokens) {
@@ -57,21 +57,21 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #handleAction (event, actor, token, actionTypeId, actionId) {
             switch (actionTypeId) {
-	    case 'resistance':
+            case 'resistance':
                 this.#handleResistanceAction(event, actor, actionId)
-		break;
+                break;
             case 'item':
                 this.#handleItemAction(event, actor, actionId)
                 break
-	    case 'wealth':
+            case 'wealth':
                 this.#handleWealthAction(event, actor, actionId)
-		break;
-	    case 'minion':
+                break;
+            case 'minion':
                 this.#handleMinionDiceAction(event, actor, actionId)
-		break;
-	    case 'refresh':
-		this.#handleRefreshAction(event, actor, actionId)
-		break;
+                break;
+            case 'refresh':
+                this.#handleRefreshAction(event, actor, actionId)
+                break;
             case 'utility':
                 this.#handleUtilityAction(token, actionId)
                 break
@@ -85,8 +85,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} actor    The actor
          * @param {string} actionId The action id
          */
-         #handleResistanceAction (event, actor, actionId) {
-	     actor.rollResistance(event, actionId)
+        #handleResistanceAction (event, actor, actionId) {
+            actor.rollResistance(event, actionId)
         }
 
         /**
@@ -98,7 +98,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         #handleItemAction (event, actor, actionId) {
             const item = actor.items.get(actionId)
-	    item.roll(event)
+            item.roll(event)
         }
 
         /**
@@ -108,8 +108,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} actor    The actor
          * @param {string} actionId The action id
          */
-         #handleWealthAction (event, actor, actionId) {
-	     actor.rollWealth(event)
+        #handleWealthAction (event, actor, actionId) {
+            actor.rollWealth(event)
         }
 
         /**
@@ -119,8 +119,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} actor    The actor
          * @param {string} actionId The action id
          */
-         #handleMinionDiceAction (event, actor, actionId) {
-	     actor.rollMinionDice(event)
+        #handleMinionDiceAction (event, actor, actionId) {
+            actor.rollMinionDice(event)
         }
 
         /**
@@ -130,8 +130,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {object} actor    The actor
          * @param {string} actionId The action id
          */
-         #handleRefreshAction (event, actor, actionId) {
-	     actor.refreshPools()
+        #handleRefreshAction (event, actor, actionId) {
+            actor.refreshPools()
         }
 
         /**

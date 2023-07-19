@@ -30,7 +30,7 @@ export const ACTION_TYPE = {
  */
 export const GROUP = {
     resistances: { id: 'resistances', name: 'tokenActionHud.those-who-wander.resistances',
-		   type: 'system' },
+                   type: 'system' },
     skills: { id: 'skills', name: 'tokenActionHud.those-who-wander.skills', type: 'system' },
     minion: { id: 'minion', name: 'tokenActionHud.those-who-wander.minion', type: 'system' },
     schools: { id: 'schools', name: 'tokenActionHud.those-who-wander.schools', type: 'system' },

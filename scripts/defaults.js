@@ -20,8 +20,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.resistances'),
                 groups: [
                     { ...groups.resistances, nestId: 'resistances_resistances' }
-		]
-	    },
+                ]
+            },
             {
                 nestId: 'skills',
                 id: 'skills',
@@ -29,8 +29,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.minion, nestId: 'skills_minion' },
                     { ...groups.skills, nestId: 'skills_skills' }
-		]
-	    },
+                ]
+            },
             {
                 nestId: 'magic',
                 id: 'magic',
@@ -38,8 +38,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.schools, nestId: 'magic_schools' },
                     { ...groups.spells, nestId: 'magic_spells' }
-		]
-	    },
+                ]
+            },
             {
                 nestId: 'talents',
                 id: 'talents',
@@ -48,8 +48,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.talents, nestId: 'talents_talents' },
                     { ...groups.attacks, nestId: 'talents_attacks' },
                     { ...groups.features, nestId: 'talents_features' }
-		]
-	    },
+                ]
+            },
             {
                 nestId: 'gear',
                 id: 'gear',
