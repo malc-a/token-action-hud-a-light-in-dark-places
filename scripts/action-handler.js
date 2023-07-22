@@ -17,7 +17,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Set actor and token variables
-            this.actors = (!this.actor) ? this._getActors() : [this.actor]
+            this.actors = (!this.actor) ? this.#getActors() : [this.actor]
             this.actorType = this.actor?.type
 
             // Set items variable
@@ -28,17 +28,26 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
 
             if (this.actor) {
-                this.#buildCharacterActions()
+                this.#buildActorActions()
             } else {
                 this.#buildMultipleTokenActions()
             }
         }
 
         /**
-         * Build character actions
+         * Get actors
+         * @private
+         * @returns {object}
+         */
+        #getActors () {
+            return canvas.tokens.controlled.map(token => token.actor)
+        }
+
+        /**
+         * Build actor actions
          * @private
          */
-        #buildCharacterActions () {
+        #buildActorActions () {
             this.#buildResistances()
             this.#buildSkills()
             this.#buildSchools()
@@ -47,7 +56,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildGear()
             this.#buildWealth()
             this.#buildMinionDice()
-            this.#buildRefresh()
+            if (this.actor.type !== 'minion') {
+		this.#buildRefresh()
+	    }
         }
 
         /**
@@ -56,6 +67,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object}
          */
         #buildMultipleTokenActions () {
+	    // If any selected token is a minion then add the refresh pools action
+            if (this.actors.some(actor => actor.type !== 'minion')) {
+		this.#buildRefresh()
+	    }
         }
 
         /**
@@ -351,17 +366,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-            // Minions don't have pools to refresh
-            if (this.actor.type !== 'minion') {
-                // Add refresh pools
-                this.addActions([{
-                    id: "refresh",
-                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
-                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
-                    listName: listName,
-                    encodedValue: ['refresh', 'refresh'].join(this.delimiter),
-                }], groupData)
-            }
+            // Add refresh pools
+            this.addActions([{
+                id: "refresh",
+                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
+                description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
+                listName: listName,
+                encodedValue: ['refresh', 'refresh'].join(this.delimiter),
+            }], groupData)
         }
     }
 })
