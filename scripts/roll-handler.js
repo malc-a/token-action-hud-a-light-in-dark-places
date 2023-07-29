@@ -69,6 +69,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             case 'minion':
                 this.#handleMinionDiceAction(event, actor, actionId)
                 break;
+            case 'actions':
+                this.#handleActionsAction(event, actor, actionId)
+                break;
+            case 'pool':
+                this.#handlePoolsAction(event, actor, actionId)
+                break;
+            case 'injuries':
+                this.#handleInjuriesAction(event, actor, actionId)
+                break;
             case 'refresh':
                 this.#handleRefreshAction(event, actor, actionId)
                 break;
@@ -121,6 +130,93 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         #handleMinionDiceAction (event, actor, actionId) {
             actor.rollMinionDice(event)
+        }
+
+        /**
+         * Handle actions action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+        #handleActionsAction (event, actor, actionId) {
+            // We might be increasing or decreasing actions
+            switch (actionId) {
+            case 'increase_actions':
+                actor.updateActions(actor.system.actions + 1)
+                break;
+            case 'decrease_actions':
+                actor.updateActions(actor.system.actions - 1)
+                break;
+            }
+        }
+
+        /**
+         * Handle pools action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+        #handlePoolsAction (event, actor, actionId) {
+            // We might be increasing or decreasing a pool
+            switch (actionId) {
+            case 'increase_body':
+                actor.updatePool('body', actor.system.resistances.body.pool + 1)
+                break;
+            case 'decrease_body':
+                actor.updatePool('body', actor.system.resistances.body.pool - 1)
+                break;
+            case 'increase_mind':
+                actor.updatePool('mind', actor.system.resistances.mind.pool + 1)
+                break;
+            case 'decrease_mind':
+                actor.updatePool('mind', actor.system.resistances.mind.pool - 1)
+                break;
+            case 'increase_soul':
+                actor.updatePool('soul', actor.system.resistances.soul.pool + 1)
+                break;
+            case 'decrease_soul':
+                actor.updatePool('soul', actor.system.resistances.soul.pool - 1)
+                break;
+            }
+        }
+
+        /**
+         * Handle injuries action
+         * @private
+         * @param {object} event    The event
+         * @param {object} actor    The actor
+         * @param {string} actionId The action id
+         */
+        #handleInjuriesAction (event, actor, actionId) {
+            // We might be increasing or decreasing injuries
+            switch (actionId) {
+            case 'increase_minion':
+                actor.updateInjuries('minion', actor.system.injuries + 1)
+                break;
+            case 'decrease_minion':
+                actor.updateInjuries('minion', actor.system.injuries - 1)
+                break;
+            case 'increase_body':
+                actor.updateInjuries('body', actor.system.resistances.body.injuries + 1)
+                break;
+            case 'decrease_body':
+                actor.updateInjuries('body', actor.system.resistances.body.injuries - 1)
+                break;
+            case 'increase_mind':
+                actor.updateInjuries('mind', actor.system.resistances.mind.injuries + 1)
+                break;
+            case 'decrease_mind':
+                actor.updateInjuries('mind', actor.system.resistances.mind.injuries - 1)
+                break;
+            case 'increase_soul':
+                actor.updateInjuries('soul', actor.system.resistances.soul.injuries + 1)
+                break;
+            case 'decrease_soul':
+                actor.updateInjuries('soul', actor.system.resistances.soul.injuries - 1)
+                break;
+            }
         }
 
         /**

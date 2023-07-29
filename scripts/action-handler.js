@@ -18,7 +18,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         async buildSystemActions (groupIds) {
             // Set actor and token variables
             this.actors = (!this.actor) ? this.#getActors() : [this.actor]
-            this.actorType = this.actor?.type
 
             // Set items variable
             if (this.actor) {
@@ -55,10 +54,12 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildTalents()
             this.#buildGear()
             this.#buildWealth()
+            this.#buildActions()
+            this.#buildPools()
+            this.#buildInjuries()
             this.#buildMinionDice()
-            if (this.actor.type !== 'minion') {
-		this.#buildRefresh()
-	    }
+            this.#buildMinionInjuries()
+            this.#buildRefresh()
         }
 
         /**
@@ -67,10 +68,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object}
          */
         #buildMultipleTokenActions () {
-	    // If any selected token is a minion then add the refresh pools action
+            // If any selected token is not a minion then add the refresh pools action
             if (this.actors.some(actor => actor.type !== 'minion')) {
-		this.#buildRefresh()
-	    }
+                this.#buildRefresh()
+            }
         }
 
         /**
@@ -87,7 +88,6 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 this.addActions([{
                     id: r,
                     name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.resistance.${r}`),
-                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.resistance.${r}`),
                     listName: listName,
                     encodedValue: ['resistance', r].join(this.delimiter),
                 }], groupData)
@@ -229,7 +229,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
-                const bonus = itemData.system.bonus ?? ""
+                const bonus = itemData.system.bonus ?? ''
 
                 // Add any rollable talents to the map
                 if (['talent','feature','attack'].includes(type)
@@ -276,7 +276,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
             for (const [itemId, itemData] of this.items) {
                 const type = itemData.type
-                const bonus = itemData.system.bonus ?? ""
+                const bonus = itemData.system.bonus ?? ''
 
                 // Add any gear or weapon with a bonus to the map
                 if (['weapon','gear'].includes(type)
@@ -318,21 +318,141 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildWealth () {
+            // A character has to have wealth to allow this roll
+            if ((this.actor.system.wealth ?? 0) === 0) { return }
+
             const groupData = { id: 'wealth', type: 'system' }
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-            // Check if the character has wealth before allowing the roll
-            if ((this.actor.system.wealth ?? 0) > 0) {
-                // Add wealth as an action
+            // Add wealth as an action
+            this.addActions([{
+                id: 'wealth',
+                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
+                listName: listName,
+                encodedValue: ['wealth', 'wealth'].join(this.delimiter),
+            }], groupData)
+        }
+
+        /**
+         * Build actions
+         * @private
+         */
+        async #buildActions () {
+            const groupData = { id: 'actions', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Add actions to decrease, show and increase the actions
+            this.addActions([{
+                id: 'increase_actions',
+                name: '',
+                icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.remove_action'),
+                encodedValue: ['actions', 'decrease_actions'].join(this.delimiter)
+            }, {
+                id: 'actions',
+                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.actions'),
+                encodedValue: ['actions', 'actions'].join(this.delimiter),
+                info1: { text: String(this.actor.system.actions) },
+                cssClass: 'disabled',
+            }, {
+                id: 'increase_actions',
+                name: '',
+                icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.add_action'),
+                encodedValue: ['actions', 'increase_actions'].join(this.delimiter)
+            }], groupData)
+        }
+
+        /**
+         * Build pools
+         * @private
+         */
+        async #buildPools () {
+            // Minions don't have pools
+            if (this.actor.type === 'minion') { return }
+
+            const parentGroupData = { id: 'pools', settings: { showTitle: false }, type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Show each pool value for reference along with decrease and increase actions
+            Object.keys(this.actor.system.resistances).forEach( r => {
+                // Set up a sub-group for this particular pool
+                const groupData = {
+                    id: 'pools_' + r,
+                    settings: { showTitle: false },
+                    stype: 'system'
+                }
+                this.addGroup(groupData, parentGroupData)
+
+                // Add the actions for this resistance
                 this.addActions([{
-                    id: "wealth",
-                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
-                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
-                    listName: listName,
-                    encodedValue: ['wealth', 'wealth'].join(this.delimiter),
+                    id: 'decrease_' + r + '_pool',
+                    name: '',
+                    icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
+                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_pool'),
+                    encodedValue: ['pool', 'decrease_' + r].join(this.delimiter)
+                }, {
+                    id: r + '_pool',
+                    name: coreModule.api.Utils.i18n(CONFIG.THOSEWHOWANDER.pools[r]),
+                    encodedValue: ['pool', r].join(this.delimiter),
+                    info1: { text: String(this.actor.system.resistances[r].pool) + '/' +
+                             this.actor.getPoolMax(r) },
+                    cssClass: 'disabled',
+                }, {
+                    id: 'increase_' + r + '_pool',
+                    name: '',
+                    icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
+                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_pool'),
+                    encodedValue: ['pool', 'increase_' + r].join(this.delimiter)
                 }], groupData)
-            }
+            })
+        }
+
+        /**
+         * Build injuries
+         * @private
+         */
+        async #buildInjuries () {
+            // Minions and menaces don't have per-pool injuries
+            if (['minion','menace'].includes(this.actor.type)) { return }
+
+            const parentGroupData = { id: 'injuries', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Show each injuries value for reference along with decrease and increase actions
+            Object.keys(this.actor.system.resistances).forEach( r => {
+                // Set up a sub-group for this particular injuries
+                const groupData = {
+                    id: 'injuries_' + r,
+                    settings: { showTitle: false },
+                    type: 'system'
+                }
+                this.addGroup(groupData, parentGroupData)
+
+                this.addActions([{
+                    id: 'decrease_' + r + '_injuries',
+                    name: '',
+                    icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
+                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_injuries'),
+                    encodedValue: ['injuries', 'decrease_' + r].join(this.delimiter)
+                }, {
+                    id: r,
+                    name: coreModule.api.Utils.i18n(CONFIG.THOSEWHOWANDER.pools[r]),
+                    encodedValue: ['injuries', r].join(this.delimiter),
+                    info1: { text: String(this.actor.system.resistances[r].injuries) },
+                    cssClass: 'disabled',
+                }, {
+                    id: 'increase_' + r + '_injuries',
+                    name: '',
+                    icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
+                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_injuries'),
+                    encodedValue: ['injuries', 'increase_' + r].join(this.delimiter)
+                }], groupData)
+            })
         }
 
         /**
@@ -340,21 +460,55 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildMinionDice () {
+            // Astonishingly, only minions have minion dice
+            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return }
+
             const groupData = { id: 'minion', type: 'system' }
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-            // Check if the character is a minion before allowing the roll
-            if (this.actor.type === 'minion' && (this.actor.system.dice ?? 0)) {
-                // Add minion attacks as an action
-                this.addActions([{
-                    id: "minion",
-                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
-                    description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
-                    listName: listName,
-                    encodedValue: ['minion', 'minion'].join(this.delimiter),
-                }], groupData)
-            }
+            // Add minion attacks as an action
+            this.addActions([{
+                id: 'minion',
+                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
+                listName: listName,
+                encodedValue: ['minion', 'minion'].join(this.delimiter),
+            }], groupData)
+        }
+
+        /**
+         * Build minion injuries
+         * @private
+         */
+        async #buildMinionInjuries () {
+            // Astonishingly, only minions take minion injuries
+            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return }
+
+            const groupData = { id: 'injuries', type: 'system' }
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+
+            // Add displaying and modifying minion injuries as actions
+            this.addActions([{
+                id: 'decrease_minion',
+                name: '',
+                icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_injuries'),
+                encodedValue: ['injuries', 'decrease_minion'].join(this.delimiter)
+            }, {
+                id: 'minion',
+                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.injuries'),
+                encodedValue: ['injuries', 'minion'].join(this.delimiter),
+                info1: { text: String(this.actor.system.injuries) + '/' +
+                         String(this.actor.system.dice) },
+                cssClass: 'disabled',
+            }, {
+                id: 'increase_minion',
+                name: '',
+                icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_injuries'),
+                encodedValue: ['injuries', 'increase_minion'].join(this.delimiter)
+            }], groupData)
         }
 
         /**
@@ -362,15 +516,17 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildRefresh () {
-            const groupData = { id: 'utility', type: 'system' }
+            // Minions don't have pools to refresh
+            if (this.actor?.type === 'minion') { return }
+
+            const groupData = { id: 'refresh', type: 'system' }
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
             // Add refresh pools
             this.addActions([{
-                id: "refresh",
-                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
-                description: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.refresh_pools`),
+                id: 'refresh',
+                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.tooltip.refresh_pools`),
                 listName: listName,
                 encodedValue: ['refresh', 'refresh'].join(this.delimiter),
             }], groupData)

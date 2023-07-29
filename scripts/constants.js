@@ -40,10 +40,14 @@ export const GROUP = {
     features: { id: 'features', name: 'tokenActionHud.those-who-wander.features', type: 'system' },
     weapons: { id: 'weapons', name: 'tokenActionHud.those-who-wander.weapons', type: 'system' },
     gear: { id: 'gear', name: 'tokenActionHud.those-who-wander.gear', type: 'system' },
+    actions: { id: 'actions', name: 'tokenActionHud.those-who-wander.actions', type: 'system' },
+    pools: { id: 'pools', name: 'tokenActionHud.those-who-wander.pools', type: 'system' },
+    injuries: { id: 'injuries', name: 'tokenActionHud.those-who-wander.injuries', type: 'system' },
+    refresh: { id: 'refresh', name: 'tokenActionHud.those-who-wander.refresh', type: 'system' },
     wealth: { id: 'wealth', name: 'tokenActionHud.those-who-wander.wealth', type: 'system' },
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
     token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
-    utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' }
+    utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' },
 }
 
 /**

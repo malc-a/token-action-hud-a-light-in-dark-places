@@ -4,6 +4,7 @@
       "resistances": "Resistances",
       "minion": "Minion",
       "skills": "Skills",
+      "magic": "Magic",
       "schools": "Schools of Magic",
       "spells": "Spells",
       "talents": "Talents",
@@ -11,6 +12,11 @@
       "features": "Special Features",
       "weapons": "Weapons",
       "gear": "Gear",
+      "status": "Status",
+      "actions": "Actions",
+      "pools": "Pools",
+      "injuries": "Injuries",
+      "refresh": "Refresh",
       "wealth": "Wealth"
     }
   }
