@@ -425,8 +425,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildInjuries () {
-            // Minions and menaces don't have per-pool injuries
-            if (['minion','menace'].includes(this.actor.type)) { return }
+            // Minions don't have per-pool injuries
+            if (this.actor.type === 'minion') { return }
 
             const parentGroupData = { id: 'injuries', type: 'system' }
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
