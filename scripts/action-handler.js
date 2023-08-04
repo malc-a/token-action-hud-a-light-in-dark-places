@@ -57,8 +57,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             this.#buildActions()
             this.#buildPools()
             this.#buildInjuries()
+            this.#buildInjuries()
             this.#buildMinionDice()
-            this.#buildMinionInjuries()
+            this.#buildDamage()
             this.#buildRefresh()
         }
 
@@ -182,6 +183,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
         }
 
+        /**
+         * Build spells
+         * @private
+         */
         async #buildSpells () {
             if (this.items.size === 0) return
 
@@ -222,6 +227,10 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             }
         }
 
+        /**
+         * Build talents and special attacks and features
+         * @private
+         */
         async #buildTalents () {
             if (this.items.size === 0) return
 
@@ -467,7 +476,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-            // Add minion attacks as an action
+            // Add minion dice rolls as an action
             this.addActions([{
                 id: 'minion',
                 name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
@@ -477,37 +486,37 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         }
 
         /**
-         * Build minion injuries
+         * Build damage (for minions only)
          * @private
          */
-        async #buildMinionInjuries () {
-            // Astonishingly, only minions take minion injuries
+        async #buildDamage () {
+            // Astonishingly, only minions take damage
             if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return }
 
-            const groupData = { id: 'injuries', type: 'system' }
+            const groupData = { id: 'damage', type: 'system' }
             const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
             const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
 
-            // Add displaying and modifying minion injuries as actions
+            // Add displaying and modifying damage as actions
             this.addActions([{
-                id: 'decrease_minion',
+                id: 'decrease_damage',
                 name: '',
                 icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_injuries'),
-                encodedValue: ['injuries', 'decrease_minion'].join(this.delimiter)
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_damage'),
+                encodedValue: ['injuries', 'decrease_damage'].join(this.delimiter)
             }, {
                 id: 'minion',
-                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.injuries'),
+                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.damage'),
                 encodedValue: ['injuries', 'minion'].join(this.delimiter),
-                info1: { text: String(this.actor.system.injuries) + '/' +
+                info1: { text: String(this.actor.system.damage) + '/' +
                          String(this.actor.system.dice) },
                 cssClass: 'disabled',
             }, {
-                id: 'increase_minion',
+                id: 'increase_damage',
                 name: '',
                 icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_injuries'),
-                encodedValue: ['injuries', 'increase_minion'].join(this.delimiter)
+                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_damage'),
+                encodedValue: ['injuries', 'increase_damage'].join(this.delimiter)
             }], groupData)
         }
 

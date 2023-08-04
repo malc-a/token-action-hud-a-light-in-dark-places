@@ -190,13 +190,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @param {string} actionId The action id
          */
         #handleInjuriesAction (event, actor, actionId) {
-            // We might be increasing or decreasing injuries
+            // We might be increasing or decreasing injuries or damage
             switch (actionId) {
-            case 'increase_minion':
-                actor.updateInjuries('minion', actor.system.injuries + 1)
+            case 'increase_damage':
+                actor.updateInjuries('minion', actor.system.damage + 1)
                 break;
-            case 'decrease_minion':
-                actor.updateInjuries('minion', actor.system.injuries - 1)
+            case 'decrease_damage':
+                actor.updateInjuries('minion', actor.system.damage - 1)
                 break;
             case 'increase_body':
                 actor.updateInjuries('body', actor.system.resistances.body.injuries + 1)

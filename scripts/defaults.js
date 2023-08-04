@@ -46,8 +46,15 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.talents'),
                 groups: [
                     { ...groups.talents, nestId: 'talents_talents' },
-                    { ...groups.attacks, nestId: 'talents_attacks' },
-                    { ...groups.features, nestId: 'talents_features' },
+                ]
+            },
+            {
+                nestId: 'features',
+                id: 'features',
+                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.features'),
+                groups: [
+                    { ...groups.attacks, nestId: 'features_attacks' },
+                    { ...groups.features, nestId: 'features_features' },
                 ]
             },
             {
@@ -67,6 +74,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.actions, nestId: 'status_actions' },
                     { ...groups.pools, nestId: 'status_pools' },
                     { ...groups.injuries, nestId: 'status_injuries' },
+                    { ...groups.damage, nestId: 'status_damage' },
                     { ...groups.refresh, nestId: 'status_refresh' },
                 ]
             },
