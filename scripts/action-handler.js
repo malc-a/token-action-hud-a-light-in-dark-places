@@ -88,7 +88,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             Object.keys(this.actor.system.resistances).forEach( r => {
                 this.addActions([{
                     id: r,
-                    name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.resistance.${r}`),
+                    name: coreModule.api.Utils.i18n(`ALIDP.resistance.${r}`),
                     listName: listName,
                     encodedValue: ['resistance', r].join(this.delimiter),
                 }], groupData)
@@ -337,7 +337,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Add wealth as an action
             this.addActions([{
                 id: 'wealth',
-                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.wealth`),
+                name: coreModule.api.Utils.i18n(`ALIDP.label.wealth`),
                 listName: listName,
                 encodedValue: ['wealth', 'wealth'].join(this.delimiter),
             }], groupData)
@@ -357,11 +357,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'increase_actions',
                 name: '',
                 icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.remove_action'),
+                tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.remove_action'),
                 encodedValue: ['actions', 'decrease_actions'].join(this.delimiter)
             }, {
                 id: 'actions',
-                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.actions'),
+                name: coreModule.api.Utils.i18n('ALIDP.label.actions'),
                 encodedValue: ['actions', 'actions'].join(this.delimiter),
                 info1: { text: String(this.actor.system.actions) },
                 cssClass: 'disabled',
@@ -369,7 +369,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'increase_actions',
                 name: '',
                 icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.add_action'),
+                tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.add_action'),
                 encodedValue: ['actions', 'increase_actions'].join(this.delimiter)
             }], groupData)
         }
@@ -401,11 +401,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'decrease_' + r + '_pool',
                     name: '',
                     icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
-                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_pool'),
+                    tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.decrease_pool'),
                     encodedValue: ['pool', 'decrease_' + r].join(this.delimiter)
                 }, {
                     id: r + '_pool',
-                    name: coreModule.api.Utils.i18n(CONFIG.THOSEWHOWANDER.pools[r]),
+                    name: coreModule.api.Utils.i18n(CONFIG.ALIDP.pools[r]),
                     encodedValue: ['pool', r].join(this.delimiter),
                     info1: { text: String(this.actor.system.resistances[r].pool) + '/' +
                              this.actor.getPoolMax(r) },
@@ -414,7 +414,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'increase_' + r + '_pool',
                     name: '',
                     icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
-                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_pool'),
+                    tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_pool'),
                     encodedValue: ['pool', 'increase_' + r].join(this.delimiter)
                 }], groupData)
             })
@@ -446,11 +446,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'decrease_' + r + '_injuries',
                     name: '',
                     icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
-                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_injuries'),
+                    tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.decrease_injuries'),
                     encodedValue: ['injuries', 'decrease_' + r].join(this.delimiter)
                 }, {
                     id: r,
-                    name: coreModule.api.Utils.i18n(CONFIG.THOSEWHOWANDER.pools[r]),
+                    name: coreModule.api.Utils.i18n(CONFIG.ALIDP.pools[r]),
                     encodedValue: ['injuries', r].join(this.delimiter),
                     info1: { text: String(this.actor.system.resistances[r].injuries) },
                     cssClass: 'disabled',
@@ -458,7 +458,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'increase_' + r + '_injuries',
                     name: '',
                     icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
-                    tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_injuries'),
+                    tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_injuries'),
                     encodedValue: ['injuries', 'increase_' + r].join(this.delimiter)
                 }], groupData)
             })
@@ -479,7 +479,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Add minion dice rolls as an action
             this.addActions([{
                 id: 'minion',
-                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.label.minion`),
+                name: coreModule.api.Utils.i18n(`ALIDP.label.minion`),
                 listName: listName,
                 encodedValue: ['minion', 'minion'].join(this.delimiter),
             }], groupData)
@@ -502,11 +502,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'decrease_damage',
                 name: '',
                 icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.decrease_damage'),
+                tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.decrease_damage'),
                 encodedValue: ['injuries', 'decrease_damage'].join(this.delimiter)
             }, {
                 id: 'minion',
-                name: coreModule.api.Utils.i18n('THOSEWHOWANDER.label.damage'),
+                name: coreModule.api.Utils.i18n('ALIDP.label.damage'),
                 encodedValue: ['injuries', 'minion'].join(this.delimiter),
                 info1: { text: String(this.actor.system.damage) + '/' +
                          String(this.actor.system.dice) },
@@ -515,7 +515,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 id: 'increase_damage',
                 name: '',
                 icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
-                tooltip: coreModule.api.Utils.i18n('THOSEWHOWANDER.tooltip.increase_damage'),
+                tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_damage'),
                 encodedValue: ['injuries', 'increase_damage'].join(this.delimiter)
             }], groupData)
         }
@@ -535,7 +535,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             // Add refresh pools
             this.addActions([{
                 id: 'refresh',
-                name: coreModule.api.Utils.i18n(`THOSEWHOWANDER.tooltip.refresh_pools`),
+                name: coreModule.api.Utils.i18n(`ALIDP.tooltip.refresh_pools`),
                 listName: listName,
                 encodedValue: ['refresh', 'refresh'].join(this.delimiter),
             }], groupData)

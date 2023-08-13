@@ -17,7 +17,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'resistances',
                 id: 'resistances',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.resistances'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.resistances'),
                 groups: [
                     { ...groups.resistances, nestId: 'resistances_resistances' },
                 ]
@@ -25,7 +25,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'skills',
                 id: 'skills',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.skills'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.skills'),
                 groups: [
                     { ...groups.minion, nestId: 'skills_minion' },
                     { ...groups.skills, nestId: 'skills_skills' },
@@ -34,7 +34,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'magic',
                 id: 'magic',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.magic'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.magic'),
                 groups: [
                     { ...groups.schools, nestId: 'magic_schools' },
                     { ...groups.spells, nestId: 'magic_spells' },
@@ -43,7 +43,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'talents',
                 id: 'talents',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.talents'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.talents'),
                 groups: [
                     { ...groups.talents, nestId: 'talents_talents' },
                 ]
@@ -51,7 +51,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'features',
                 id: 'features',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.features'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.features'),
                 groups: [
                     { ...groups.attacks, nestId: 'features_attacks' },
                     { ...groups.features, nestId: 'features_features' },
@@ -60,7 +60,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'gear',
                 id: 'gear',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.gear'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.gear'),
                 groups: [
                     { ...groups.weapons, nestId: 'gear_weapons' },
                     { ...groups.gear, nestId: 'gear_gear' },
@@ -69,7 +69,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
             {
                 nestId: 'status',
                 id: 'status',
-                name: coreModule.api.Utils.i18n('tokenActionHud.those-who-wander.status'),
+                name: coreModule.api.Utils.i18n('tokenActionHud.alidp.status'),
                 groups: [
                     { ...groups.actions, nestId: 'status_actions' },
                     { ...groups.pools, nestId: 'status_pools' },
