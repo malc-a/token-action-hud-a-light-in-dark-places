@@ -354,7 +354,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
 
             // Add actions to decrease, show and increase the actions
             this.addActions([{
-                id: 'increase_actions',
+                id: 'decrease_actions',
                 name: '',
                 icon1: '<i class="fa fa-backward" aria-hidden="true"></i>',
                 tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.remove_action'),
