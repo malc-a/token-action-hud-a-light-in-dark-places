@@ -1,0 +1,45 @@
+name: Release CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release the current version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the module
+        uses: actions/checkout@v3
+
+      # Get the module name and version
+      - name: Get the module name
+        id: name
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: module.json
+          prop_path: id
+      - name: Get the module version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: module.json
+          prop_path: version
+
+      # Create the zip archive of the module
+      - name: Create zip archive of the module
+        run: zip -r9 ${{ steps.name.outputs.prop }}.zip *
+
+      # Create the release with its artifacts and description
+      - name: Create the release and artifacts
+        uses: ncipollo/release-action@v1
+        with:
+          name: v${{ steps.version.outputs.prop }}
+          tag: v${{ steps.version.outputs.prop }}
+          allowUpdates: true
+          draft: false
+          prerelease: false
+          artifacts: 'module.json, ${{ steps.name.outputs.prop }}.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
