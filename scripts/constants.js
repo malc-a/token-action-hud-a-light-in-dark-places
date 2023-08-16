@@ -3,19 +3,19 @@
  */
 export const MODULE = {
     ID: 'token-action-hud-a-light-in-dark-places'
-}
+};
 
 /**
  * Core module
  */
 export const CORE_MODULE = {
     ID: 'token-action-hud-core'
-}
+};
 
 /**
  * Core module version required by the system module
  */
-export const REQUIRED_CORE_MODULE_VERSION = '1.4'
+export const REQUIRED_CORE_MODULE_VERSION = '1.4';
 
 /**
  * Action types
@@ -23,7 +23,7 @@ export const REQUIRED_CORE_MODULE_VERSION = '1.4'
 export const ACTION_TYPE = {
     item: 'tokenActionHud.alidp.item',
     utility: 'tokenActionHud.utility'
-}
+};
 
 /**
  * Groups
@@ -38,7 +38,6 @@ export const GROUP = {
     talents: { id: 'talents', name: 'tokenActionHud.alidp.talents', type: 'system' },
     features: { id: 'features', name: 'tokenActionHud.alidp.features', type: 'system' },
     attacks: { id: 'attacks', name: 'tokenActionHud.alidp.attacks', type: 'system' },
-    features: { id: 'features', name: 'tokenActionHud.alidp.features', type: 'system' },
     weapons: { id: 'weapons', name: 'tokenActionHud.alidp.weapons', type: 'system' },
     gear: { id: 'gear', name: 'tokenActionHud.alidp.gear', type: 'system' },
     actions: { id: 'actions', name: 'tokenActionHud.alidp.actions', type: 'system' },
@@ -50,7 +49,7 @@ export const GROUP = {
     combat: { id: 'combat', name: 'tokenActionHud.combat', type: 'system' },
     token: { id: 'token', name: 'tokenActionHud.token', type: 'system' },
     utility: { id: 'utility', name: 'tokenActionHud.utility', type: 'system' },
-}
+};
 
 /**
  * Talent/feature types
@@ -59,7 +58,7 @@ export const TALENT_TYPE = {
     talent: { groupId: 'talents' },
     attack: { groupId: 'attacks' },
     feature: { groupId: 'features' }
-}
+};
 
 /**
  * Item types
@@ -67,4 +66,4 @@ export const TALENT_TYPE = {
 export const GEAR_TYPE = {
     weapon: { groupId: 'weapons' },
     gear: { groupId: 'gear' }
-}
+};

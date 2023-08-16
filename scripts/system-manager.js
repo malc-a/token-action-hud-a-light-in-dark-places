@@ -1,9 +1,9 @@
 // System Module Imports
-import { ActionHandler } from './action-handler.js'
-import { RollHandler as Core } from './roll-handler.js'
-import { DEFAULTS } from './defaults.js'
+import { ActionHandler } from './action-handler.js';
+import { RollHandler as Core } from './roll-handler.js';
+import { DEFAULTS } from './defaults.js';
 
-export let SystemManager = null
+export let SystemManager = null;
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
@@ -17,7 +17,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {ActionHandler} The ActionHandler instance
          */
         doGetActionHandler () {
-            return new ActionHandler()
+            return new ActionHandler();
         }
 
         /**
@@ -28,9 +28,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object} The available roll handlers
          */
         getAvailableRollHandlers () {
-            const coreTitle = 'Core Template'
-            const choices = { core: coreTitle }
-            return choices
+            const coreTitle = 'Core Template';
+            const choices = { core: coreTitle };
+            return choices;
         }
 
         /**
@@ -41,14 +41,14 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {rollHandler}        The RollHandler instance
          */
         doGetRollHandler (rollHandlerId) {
-            let rollHandler
+            let rollHandler;
             switch (rollHandlerId) {
             case 'core':
             default:
-                rollHandler = new Core()
-                break
+                rollHandler = new Core();
+                break;
             }
-            return rollHandler
+            return rollHandler;
         }
 
         /**
@@ -57,7 +57,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object} The default layout and groups
          */
         async doRegisterDefaultFlags () {
-            return DEFAULTS
+            return DEFAULTS;
         }
     }
-})
+});

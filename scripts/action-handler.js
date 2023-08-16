@@ -1,12 +1,12 @@
 // System Module Imports
-import { ACTION_TYPE, TALENT_TYPE, GEAR_TYPE } from './constants.js'
-import { Utils } from './utils.js'
+import { ACTION_TYPE, TALENT_TYPE, GEAR_TYPE } from './constants.js';
 
-export let ActionHandler = null
+export let ActionHandler = null;
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
     /**
-     * Extends Token Action HUD Core's ActionHandler class and builds system-defined actions for the HUD
+     * Extends Token Action HUD Core's ActionHandler class
+     * and builds system-defined actions for the HUD
      */
     ActionHandler = class ActionHandler extends coreModule.api.ActionHandler {
         /**
@@ -17,19 +17,19 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async buildSystemActions (groupIds) {
             // Set actor and token variables
-            this.actors = (!this.actor) ? this.#getActors() : [this.actor]
+            this.actors = (!this.actor) ? this.#getActors() : [this.actor];
 
             // Set items variable
             if (this.actor) {
-                let items = this.actor.items
-                items = coreModule.api.Utils.sortItemsByName(items)
-                this.items = items
+                let items = this.actor.items;
+                items = coreModule.api.Utils.sortItemsByName(items);
+                this.items = items;
             }
 
             if (this.actor) {
-                this.#buildActorActions()
+                this.#buildActorActions();
             } else {
-                this.#buildMultipleTokenActions()
+                this.#buildMultipleTokenActions();
             }
         }
 
@@ -39,7 +39,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @returns {object}
          */
         #getActors () {
-            return canvas.tokens.controlled.map(token => token.actor)
+            return canvas.tokens.controlled.map(token => token.actor);
         }
 
         /**
@@ -47,20 +47,20 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         #buildActorActions () {
-            this.#buildResistances()
-            this.#buildSkills()
-            this.#buildSchools()
-            this.#buildSpells()
-            this.#buildTalents()
-            this.#buildGear()
-            this.#buildWealth()
-            this.#buildActions()
-            this.#buildPools()
-            this.#buildInjuries()
-            this.#buildInjuries()
-            this.#buildMinionDice()
-            this.#buildDamage()
-            this.#buildRefresh()
+            this.#buildResistances();
+            this.#buildSkills();
+            this.#buildSchools();
+            this.#buildSpells();
+            this.#buildTalents();
+            this.#buildGear();
+            this.#buildWealth();
+            this.#buildActions();
+            this.#buildPools();
+            this.#buildInjuries();
+            this.#buildInjuries();
+            this.#buildMinionDice();
+            this.#buildDamage();
+            this.#buildRefresh();
         }
 
         /**
@@ -71,7 +71,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
         #buildMultipleTokenActions () {
             // If any selected token is not a minion then add the refresh pools action
             if (this.actors.some(actor => actor.type !== 'minion')) {
-                this.#buildRefresh()
+                this.#buildRefresh();
             }
         }
 
@@ -80,9 +80,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildResistances () {
-            const groupData = { id: 'resistances', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'resistances', type: 'system' };
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
 
             // Add each resistance as an action
             Object.keys(this.actor.system.resistances).forEach( r => {
@@ -91,7 +91,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     name: coreModule.api.Utils.i18n(`ALIDP.resistance.${r}`),
                     listName: listName,
                     encodedValue: ['resistance', r].join(this.delimiter),
-                }], groupData)
+                }], groupData);
             })
         }
 
@@ -100,43 +100,30 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildSkills () {
-            if (this.items.size === 0) return
+            if (this.items.size === 0) { return; }
 
-            const skillMap = new Map()
-
-            for (const [itemId, itemData] of this.items) {
-                const type = itemData.type
-
-                // Add all skills to the map
-                if (type === 'skill') {
-                    const typeMap = skillMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    skillMap.set(type, typeMap)
+            // Create a map of all the Actor's skills
+            const skillMap = new Map();
+            for (const [id, data] of this.items) {
+                if (data.type === 'skill') {
+                    skillMap.set(id, data);
                 }
             }
 
-            for (const [type, typeMap] of skillMap) {
-                const groupData = { id: 'skills', type: 'system' }
+            // Now create an action for each skill
+            const groupData = { id: 'skills', type: 'system' };
+            const actions = [...skillMap].map(([id, data]) => {
+                // Get Actions
+                const name = data.name;
+                const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+                const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
+                const encodedValue = ['item', id].join(this.delimiter);
 
-                // Get actions
-                const actions = [...typeMap].map(([itemId, itemData]) => {
-                    const id = itemId
-                    const name = itemData.name
-                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
-                    const encodedValue = ['item', id].join(this.delimiter)
+                return { id, name, listName, encodedValue };
+            });
 
-                    return {
-                        id,
-                        name,
-                        listName,
-                        encodedValue
-                    }
-                })
-
-                // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
-            }
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData);
         }
 
         /**
@@ -144,43 +131,30 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildSchools () {
-            if (this.items.size === 0) return
+            if (this.items.size === 0) { return; }
 
-            const schoolMap = new Map()
-
-            for (const [itemId, itemData] of this.items) {
-                const type = itemData.type
-
-                // Add all schools to the map
-                if (type === 'school') {
-                    const typeMap = schoolMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    schoolMap.set(type, typeMap)
+            // Create a map of all the Actor's schools of magic
+            const schoolMap = new Map();
+            for (const [id, data] of this.items) {
+                if (data.type === 'school') {
+                    schoolMap.set(id, data);
                 }
             }
 
-            for (const [type, typeMap] of schoolMap) {
-                const groupData = { id: 'schools', type: 'system' }
+            // Now create an action for each school
+            const groupData = { id: 'schools', type: 'system' };
+            const actions = [...schoolMap].map(([id, data]) => {
+                // Get Actions
+                const name = data.name;
+                const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+                const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
+                const encodedValue = ['item', id].join(this.delimiter);
 
-                // Get actions
-                const actions = [...typeMap].map(([itemId, itemData]) => {
-                    const id = itemId
-                    const name = itemData.name
-                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
-                    const encodedValue = ['item', id].join(this.delimiter)
+                return { id, name, listName, encodedValue };
+            });
 
-                    return {
-                        id,
-                        name,
-                        listName,
-                        encodedValue
-                    }
-                })
-
-                // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
-            }
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData);
         }
 
         /**
@@ -188,43 +162,30 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildSpells () {
-            if (this.items.size === 0) return
+            if (this.items.size === 0) { return; }
 
-            const spellMap = new Map()
-
-            for (const [itemId, itemData] of this.items) {
-                const type = itemData.type
-
-                // Add all spell to the map
-                if (type === 'spell') {
-                    const typeMap = spellMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    spellMap.set(type, typeMap)
+            // Create a map of all the Actor's spells
+            const spellMap = new Map();
+            for (const [id, data] of this.items) {
+                if (data.type === 'spell') {
+                    spellMap.set(id, data);
                 }
             }
 
-            for (const [type, typeMap] of spellMap) {
-                const groupData = { id: 'spells', type: 'system' }
+            // Now create an action for each spell
+            const groupData = { id: 'spells', type: 'system' };
+            const actions = [...spellMap].map(([id, data]) => {
+                // Get Actions
+                const name = data.name;
+                const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+                const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
+                const encodedValue = ['item', id].join(this.delimiter);
 
-                // Get actions
-                const actions = [...typeMap].map(([itemId, itemData]) => {
-                    const id = itemId
-                    const name = itemData.name
-                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
-                    const encodedValue = ['item', id].join(this.delimiter)
+                return { id, name, listName, encodedValue };
+            });
 
-                    return {
-                        id,
-                        name,
-                        listName,
-                        encodedValue
-                    }
-                })
-
-                // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
-            }
+            // TAH Core method to add actions to the action list
+            this.addActions(actions, groupData);
         }
 
         /**
@@ -232,46 +193,46 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildTalents () {
-            if (this.items.size === 0) return
+            if (this.items.size === 0) { return; }
 
-            const talentMap = new Map()
+            const talentMap = new Map();
 
             for (const [itemId, itemData] of this.items) {
-                const type = itemData.type
-                const bonus = itemData.system.bonus ?? ''
+                const type = itemData.type;
+                const bonus = itemData.system.bonus ?? '';
 
                 // Add any rollable talents to the map
                 if (['talent','feature','attack'].includes(type)
                     && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
-                    const typeMap = talentMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    talentMap.set(type, typeMap)
+                    const typeMap = talentMap.get(type) ?? new Map();
+                    typeMap.set(itemId, itemData);
+                    talentMap.set(type, typeMap);
                 }
             }
 
             for (const [type, typeMap] of talentMap) {
-                const groupId = TALENT_TYPE[type]?.groupId
-                if (!groupId) continue
-                const groupData = { id: groupId, type: 'system' }
+                const groupId = TALENT_TYPE[type]?.groupId;
+                if (!groupId) { continue; }
+                const groupData = { id: groupId, type: 'system' };
 
                 // Get actions
                 const actions = [...typeMap].map(([itemId, itemData]) => {
-                    const id = itemId
-                    const name = itemData.name
-                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
-                    const encodedValue = ['item', id].join(this.delimiter)
+                    const id = itemId;
+                    const name = itemData.name;
+                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
+                    const encodedValue = ['item', id].join(this.delimiter);
 
                     return {
                         id,
                         name,
                         listName,
                         encodedValue
-                    }
-                })
+                    };
+                });
 
                 // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
+                this.addActions(actions, groupData);
             }
         }
 
@@ -280,45 +241,45 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildGear () {
-            if (this.items.size === 0) return
-            const gearMap = new Map()
+            if (this.items.size === 0) { return; }
+            const gearMap = new Map();
 
             for (const [itemId, itemData] of this.items) {
-                const type = itemData.type
-                const bonus = itemData.system.bonus ?? ''
+                const type = itemData.type;
+                const bonus = itemData.system.bonus ?? '';
 
                 // Add any gear or weapon with a bonus to the map
                 if (['weapon','gear'].includes(type)
                     && bonus.match(/(^|,)\s*([\w\s]+)\s+([+-]\d+)do?\s*(,|$)/)) {
-                    const typeMap = gearMap.get(type) ?? new Map()
-                    typeMap.set(itemId, itemData)
-                    gearMap.set(type, typeMap)
+                    const typeMap = gearMap.get(type) ?? new Map();
+                    typeMap.set(itemId, itemData);
+                    gearMap.set(type, typeMap);
                 }
             }
 
             for (const [type, typeMap] of gearMap) {
-                const groupId = GEAR_TYPE[type]?.groupId
-                if (!groupId) continue
-                const groupData = { id: groupId, type: 'system' }
+                const groupId = GEAR_TYPE[type]?.groupId;
+                if (!groupId) { continue; }
+                const groupData = { id: groupId, type: 'system' };
 
                 // Get actions
                 const actions = [...typeMap].map(([itemId, itemData]) => {
-                    const id = itemId
-                    const name = itemData.name
-                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
-                    const encodedValue = ['item', id].join(this.delimiter)
+                    const id = itemId;
+                    const name = itemData.name;
+                    const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+                    const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
+                    const encodedValue = ['item', id].join(this.delimiter);
 
                     return {
                         id,
                         name,
                         listName,
                         encodedValue
-                    }
-                })
+                    };
+                });
 
                 // TAH Core method to add actions to the action list
-                this.addActions(actions, groupData)
+                this.addActions(actions, groupData);
             }
         }
 
@@ -328,11 +289,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildWealth () {
             // A character has to have wealth to allow this roll
-            if ((this.actor.system.wealth ?? 0) === 0) { return }
+            if ((this.actor.system.wealth ?? 0) === 0) { return; }
 
-            const groupData = { id: 'wealth', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'wealth', type: 'system' };
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
 
             // Add wealth as an action
             this.addActions([{
@@ -348,9 +309,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          * @private
          */
         async #buildActions () {
-            const groupData = { id: 'actions', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'actions', type: 'system' };
 
             // Add actions to decrease, show and increase the actions
             this.addActions([{
@@ -371,7 +330,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
                 tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.add_action'),
                 encodedValue: ['actions', 'increase_actions'].join(this.delimiter)
-            }], groupData)
+            }], groupData);
         }
 
         /**
@@ -380,11 +339,13 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildPools () {
             // Minions don't have pools
-            if (this.actor.type === 'minion') { return }
+            if (this.actor.type === 'minion') { return; }
 
-            const parentGroupData = { id: 'pools', settings: { showTitle: false }, type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const parentGroupData = {
+                id: 'pools',
+                settings: { showTitle: false },
+                type: 'system'
+            };
 
             // Show each pool value for reference along with decrease and increase actions
             Object.keys(this.actor.system.resistances).forEach( r => {
@@ -393,7 +354,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'pools_' + r,
                     settings: { showTitle: false },
                     stype: 'system'
-                }
+                };
                 this.addGroup(groupData, parentGroupData)
 
                 // Add the actions for this resistance
@@ -416,7 +377,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
                     tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_pool'),
                     encodedValue: ['pool', 'increase_' + r].join(this.delimiter)
-                }], groupData)
+                }], groupData);
             })
         }
 
@@ -426,11 +387,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildInjuries () {
             // Minions don't have per-pool injuries
-            if (this.actor.type === 'minion') { return }
+            if (this.actor.type === 'minion') { return; }
 
-            const parentGroupData = { id: 'injuries', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const parentGroupData = { id: 'injuries', type: 'system' };
 
             // Show each injuries value for reference along with decrease and increase actions
             Object.keys(this.actor.system.resistances).forEach( r => {
@@ -439,8 +398,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     id: 'injuries_' + r,
                     settings: { showTitle: false },
                     type: 'system'
-                }
-                this.addGroup(groupData, parentGroupData)
+                };
+                this.addGroup(groupData, parentGroupData);
 
                 this.addActions([{
                     id: 'decrease_' + r + '_injuries',
@@ -460,8 +419,8 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
                     tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_injuries'),
                     encodedValue: ['injuries', 'increase_' + r].join(this.delimiter)
-                }], groupData)
-            })
+                }], groupData);
+            });
         }
 
         /**
@@ -470,11 +429,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildMinionDice () {
             // Astonishingly, only minions have minion dice
-            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return }
+            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return; }
 
-            const groupData = { id: 'minion', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'minion', type: 'system' };
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
 
             // Add minion dice rolls as an action
             this.addActions([{
@@ -482,7 +441,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n(`ALIDP.label.minion`),
                 listName: listName,
                 encodedValue: ['minion', 'minion'].join(this.delimiter),
-            }], groupData)
+            }], groupData);
         }
 
         /**
@@ -491,11 +450,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildDamage () {
             // Astonishingly, only minions take damage
-            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return }
+            if (this.actor.type !== 'minion' || !(this.actor.system.dice ?? 0)) { return; }
 
-            const groupData = { id: 'damage', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'damage', type: 'system' };
 
             // Add displaying and modifying damage as actions
             this.addActions([{
@@ -517,7 +474,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 icon1: '<i class="fa fa-forward" aria-hidden="true"></i>',
                 tooltip: coreModule.api.Utils.i18n('ALIDP.tooltip.increase_damage'),
                 encodedValue: ['injuries', 'increase_damage'].join(this.delimiter)
-            }], groupData)
+            }], groupData);
         }
 
         /**
@@ -526,11 +483,11 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
          */
         async #buildRefresh () {
             // Minions don't have pools to refresh
-            if (this.actor?.type === 'minion') { return }
+            if (this.actor?.type === 'minion') { return; }
 
-            const groupData = { id: 'refresh', type: 'system' }
-            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item'])
-            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`
+            const groupData = { id: 'refresh', type: 'system' };
+            const actionTypeName = coreModule.api.Utils.i18n(ACTION_TYPE['item']);
+            const listName = `${actionTypeName ? `${actionTypeName}: ` : ''}${name}`;
 
             // Add refresh pools
             this.addActions([{
@@ -538,7 +495,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n(`ALIDP.tooltip.refresh_pools`),
                 listName: listName,
                 encodedValue: ['refresh', 'refresh'].join(this.delimiter),
-            }], groupData)
+            }], groupData);
         }
     }
-})
+});

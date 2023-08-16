@@ -5,10 +5,10 @@ Hooks.on('tokenActionHudCoreApiReady', async () => {
     /**
      * Return the SystemManager and requiredCoreModuleVersion to Token Action HUD Core
      */
-    const module = game.modules.get(MODULE.ID)
+    const module = game.modules.get(MODULE.ID);
     module.api = {
         requiredCoreModuleVersion: REQUIRED_CORE_MODULE_VERSION,
         SystemManager
     }
-    Hooks.call('tokenActionHudSystemReady', module)
-})
+    Hooks.call('tokenActionHudSystemReady', module);
+});

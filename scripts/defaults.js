@@ -6,12 +6,12 @@ import { GROUP } from './constants.js'
 export let DEFAULTS = null
 
 Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
-    const groups = GROUP
+    const groups = GROUP;
     Object.values(groups).forEach(group => {
-        group.name = coreModule.api.Utils.i18n(group.name)
-        group.listName = `Group: ${coreModule.api.Utils.i18n(group.listName ?? group.name)}`
-    })
-    const groupsArray = Object.values(groups)
+        group.name = coreModule.api.Utils.i18n(group.name);
+        group.listName = `Group: ${coreModule.api.Utils.i18n(group.listName ?? group.name)}`;
+    });
+    const groupsArray = Object.values(groups);
     DEFAULTS = {
         layout: [
             {
@@ -20,7 +20,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('tokenActionHud.alidp.resistances'),
                 groups: [
                     { ...groups.resistances, nestId: 'resistances_resistances' },
-                ]
+                ],
             },
             {
                 nestId: 'skills',
@@ -29,7 +29,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.minion, nestId: 'skills_minion' },
                     { ...groups.skills, nestId: 'skills_skills' },
-                ]
+                ],
             },
             {
                 nestId: 'magic',
@@ -38,7 +38,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.schools, nestId: 'magic_schools' },
                     { ...groups.spells, nestId: 'magic_spells' },
-                ]
+                ],
             },
             {
                 nestId: 'talents',
@@ -46,7 +46,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 name: coreModule.api.Utils.i18n('tokenActionHud.alidp.talents'),
                 groups: [
                     { ...groups.talents, nestId: 'talents_talents' },
-                ]
+                ],
             },
             {
                 nestId: 'features',
@@ -55,7 +55,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.attacks, nestId: 'features_attacks' },
                     { ...groups.features, nestId: 'features_features' },
-                ]
+                ],
             },
             {
                 nestId: 'gear',
@@ -64,7 +64,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                 groups: [
                     { ...groups.weapons, nestId: 'gear_weapons' },
                     { ...groups.gear, nestId: 'gear_gear' },
-                ]
+                ],
             },
             {
                 nestId: 'status',
@@ -76,7 +76,7 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.injuries, nestId: 'status_injuries' },
                     { ...groups.damage, nestId: 'status_damage' },
                     { ...groups.refresh, nestId: 'status_refresh' },
-                ]
+                ],
             },
             {
                 nestId: 'utility',
@@ -87,9 +87,9 @@ Hooks.once('tokenActionHudCoreApiReady', async (coreModule) => {
                     { ...groups.combat, nestId: 'utility_combat' },
                     { ...groups.token, nestId: 'utility_token' },
                     { ...groups.utility, nestId: 'utility_utility' },
-                ]
-            }
+                ],
+            },
         ],
-        groups: groupsArray
-    }
-})
+        groups: groupsArray,
+    };
+});
