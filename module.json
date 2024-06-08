@@ -2,10 +2,10 @@
   "id": "token-action-hud-a-light-in-dark-places",
   "title": "Token Action HUD for A Light in Dark Places",
   "description": "Provide support for the A Light in Dark Places system with Token Action HUD Core",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "compatibility": {
     "minimum": "10",
-    "verified": "11.315",
+    "verified": "12.325",
     "maximum": ""
   },
   "authors": [
